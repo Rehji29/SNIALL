@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Writing Is The Best</title>
+<link rel="stylesheet" href="style.css">
+<style>
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="header">
+    <h1 class="title">WRITING IS THE BEST</h1>
+    <div class="header-actions">
+      <button type="button" class="settings-button" id="settings-button" aria-label="Settings" title="Settings">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button type="button" class="game-toggle" id="game-button">Play A Game</button>
+    </div>
+  </header>
+
+  <section class="sheet" id="sheet" aria-label="Handwriting practice area">
+    <div id="trace-layer" class="trace-layer"></div>
+    <canvas id="ink" aria-label="Handwriting drawing area"></canvas>
+  </section>
+
+  <div class="game-actions">
+    <a class="home-link" id="home-link" href="saket.html">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      <span>Back to Home</span>
+    </a>
+    <button type="button" id="submit-game-button" class="submit-game-button" hidden>Submit</button>
+  </div>
+</main>
+
+<div class="modal" id="game-modal" aria-hidden="true" inert>
+  <div class="modal-overlay" id="game-modal-overlay"></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="game-modal-title">
+    <button type="button" class="modal-close" id="game-modal-close" aria-label="Close">×</button>
+    <h2 id="game-modal-title">Trace Game</h2>
+
+    <div class="difficulty-section">
+      <h3>Choose Difficulty</h3>
+      <div class="difficulty-options">
+        <label class="difficulty-card">
+          <input type="radio" name="difficulty" value="easy" checked>
+          <span class="difficulty-content">
+            <span class="difficulty-title">Easy</span>
+            <span class="difficulty-description">Simple letters with clear guides</span>
+          </span>
+        </label>
+        <label class="difficulty-card">
+          <input type="radio" name="difficulty" value="medium">
+          <span class="difficulty-content">
+            <span class="difficulty-title">Medium</span>
+            <span class="difficulty-description">More challenging letters and paths</span>
+          </span>
+        </label>
+        <label class="difficulty-card">
+          <input type="radio" name="difficulty" value="hard">
+          <span class="difficulty-content">
+            <span class="difficulty-title">Yearning</span>
+            <span class="difficulty-description">Complex tracing with more yearning</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <button type="button" class="start-game-button" id="start-game-button">Start</button>
+  </div>
+</div>
+
+<div class="modal results" id="results-modal" aria-hidden="true" inert>
+  <div class="modal-overlay" id="results-modal-overlay"></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="results-title">
+    <button type="button" class="modal-close" id="results-modal-close" aria-label="Close results">×</button>
+    <h2 id="results-title">Results</h2>
+
+    <div class="results-score">
+      <span id="results-percentage" class="results-percentage">0%</span>
+      <span id="results-message" class="results-message">Good job!</span>
+    </div>
+
+    <div class="results-breakdown">
+      <div class="result-row"><span>Line Orientation</span><strong id="orientation-score">0%</strong></div>
+      <div class="result-row"><span>Trace Coverage</span><strong id="trace-score">0%</strong></div>
+      <div class="result-row"><span>Completion</span><strong id="completion-score">0%</strong></div>
+    </div>
+
+    <div class="results-actions">
+      <button type="button" class="try-again-button" id="try-again-button">Try Again</button>
+      <button type="button" class="results-done-button" id="results-done-button">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="settings-modal" aria-hidden="true" inert>
+  <div class="modal-overlay" id="settings-modal-overlay"></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <button type="button" class="modal-close" id="settings-modal-close" aria-label="Close settings">×</button>
+    <h2 id="settings-title">Settings</h2>
+
+    <div id="settings-body"></div>
+
+    <div class="settings-actions">
+      <button type="button" class="try-again-button" id="settings-reset-button">Reset to defaults</button>
+      <button type="button" class="results-done-button" id="settings-done-button">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const sheet = $("sheet");
+  const canvas = $("ink");
+  const ctx = canvas.getContext("2d");
+  const traceLayer = $("trace-layer");
+
+  const gameButton = $("game-button");
+  const submitButton = $("submit-game-button");
+  const gameModal = $("game-modal");
+  const resultsModal = $("results-modal");
+  const settingsModal = $("settings-modal");
+  const settingsButton = $("settings-button");
+  const settingsBody = $("settings-body");
+
+  const resultFields = {
+    overall: $("results-percentage"),
+    orientation: $("orientation-score"),
+    trace: $("trace-score"),
+    completion: $("completion-score"),
+    message: $("results-message")
+  };
+
+  const SETTINGS = {
+    errorColor: "#ff3b30",
+    pressureWidth: 3,
+    errorFrequencyStart: 260,
+    errorFrequencyEnd: 150,
+    errorDuration: 0.2,
+    soundCooldown: 120
+  };
+
+
+  const ACTIVITIES = {
+    easy: ["cat", "sun", "ball", "book", "fish"],
+    medium: ["red ball", "my book", "blue cup", "my bag", "soft toy"],
+    hard: [
+      "I see a red ball.",
+      "The cat is small.",
+      "I have my book.",
+      "The cup is blue.",
+      "The sun is hot."
+    ]
+  };
+
+  const ROW_COUNT = 3;
+
+  const segments = [];
+
+  let drawing = false;
+  let activePointerId = null;
+  let lastPoint = null;
+  let penSeen = false;
+  let isCurrentlyOutside = false;
+  let errorCount = 0;
+  let currentOutsideZone = null;
+  let audioContext = null;
+  let lastErrorSoundTime = 0;
+  let gameStarted = false;
+  let currentDifficulty = "easy";
+  let currentActivity = "";
+
+  function buildRows() {
+    const rowHTML = (n) => `
+      <div class="row" data-row="${n}">
+        <div class="line blue" aria-hidden="true"></div>
+        <div class="zone writing" data-zone="writing-${n}"><div class="line red" aria-hidden="true"></div></div>
+        <div class="line blue" aria-hidden="true"></div>
+      </div>
+      <div class="zone outside" data-zone="outside-${n}" aria-hidden="true"></div>`;
+
+    const html = Array.from({ length: ROW_COUNT }, (_, i) => rowHTML(i + 1)).join("");
+    traceLayer.insertAdjacentHTML("beforebegin", html);
+  }
+
+  function initAudio() {
+    if (!audioContext) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) audioContext = new AudioContextClass();
+    }
+    if (audioContext && audioContext.state === "suspended") audioContext.resume();
+  }
+
+  function playErrorSound(ignoreCooldown = false) {
+    if (!audioContext || !prefs.soundEnabled || prefs.soundIntensity === 0) return;
+
+    const now = audioContext.currentTime;
+    if (!ignoreCooldown && now - lastErrorSoundTime < SETTINGS.soundCooldown / 1000) return;
+    lastErrorSoundTime = now;
+
+    // 40% intensity matches the original volume (0.2).
+    const peak = (prefs.soundIntensity / 100) * 0.5;
+
+    const end = now + SETTINGS.errorDuration;
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(SETTINGS.errorFrequencyStart, now);
+    oscillator.frequency.exponentialRampToValueAtTime(SETTINGS.errorFrequencyEnd, end);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(peak, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start(now);
+    oscillator.stop(end + 0.02);
+  }
+
+  function drawSegment({ x1, y1, x2, y2, width, outside }) {
+    if (outside && !prefs.showErrorLine) return;
+
+    ctx.strokeStyle = outside ? SETTINGS.errorColor : INK_COLORS[prefs.inkColor];
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+
+  function redraw() {
+    const rect = sheet.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    segments.forEach(drawSegment);
+  }
+
+  function resizeCanvas() {
+    const rect = sheet.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    redraw();
+  }
+
+  function releaseOutsideZone() {
+    if (currentOutsideZone) {
+      currentOutsideZone.classList.remove("hit-out");
+      currentOutsideZone = null;
+    }
+  }
+
+  function clearInk() {
+    segments.length = 0;
+    errorCount = 0;
+    isCurrentlyOutside = false;
+    releaseOutsideZone();
+    redraw();
+  }
+
+
+  function getLocalPoint({ clientX, clientY }) {
+    const rect = sheet.getBoundingClientRect();
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function getZoneAt(clientX, clientY) {
+    for (const zone of sheet.querySelectorAll(".zone")) {
+      const r = zone.getBoundingClientRect();
+      if (clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom) {
+        return {
+          type: zone.classList.contains("outside") ? "outside" : "writing",
+          element: zone,
+          name: zone.dataset.zone
+        };
+      }
+    }
+    return { type: "outside", element: null, name: "unknown" };
+  }
+
+  function handleZone(zone) {
+    if (zone.type !== "outside") {
+      releaseOutsideZone();
+      isCurrentlyOutside = false;
+      return;
+    }
+
+    if (currentOutsideZone && currentOutsideZone !== zone.element) {
+      currentOutsideZone.classList.remove("hit-out");
+    }
+
+    if (zone.element) {
+      if (prefs.showErrorLine) zone.element.classList.add("hit-out");
+      currentOutsideZone = zone.element;
+    }
+
+    if (!isCurrentlyOutside) {
+      isCurrentlyOutside = true;
+      errorCount++;
+      playErrorSound();
+
+      sheet.dispatchEvent(new CustomEvent("stroke-outside", {
+        detail: { zone: zone.name, errorCount }
+      }));
+    }
+  }
+
+  function isAllowedPointer(event) {
+    if (event.pointerType === "pen") {
+      penSeen = true;
+      return true;
+    }
+    return !(event.pointerType === "touch" && penSeen);
+  }
+
+  function getPenWidth(event) {
+    if (event.pointerType === "mouse") return prefs.penThickness;
+    return prefs.penThickness + (event.pressure || 0.5) * SETTINGS.pressureWidth;
+  }
+
+  function handlePointerDown(event) {
+    if (!isAllowedPointer(event) || drawing) return;
+
+    event.preventDefault();
+    initAudio();
+
+    drawing = true;
+    activePointerId = event.pointerId;
+    sheet.setPointerCapture(event.pointerId);
+
+    lastPoint = getLocalPoint(event);
+    isCurrentlyOutside = false;
+
+    handleZone(getZoneAt(event.clientX, event.clientY));
+  }
+
+  function handlePointerMove(event) {
+    if (!drawing || event.pointerId !== activePointerId) return;
+
+    event.preventDefault();
+
+    const samples = event.getCoalescedEvents ? event.getCoalescedEvents() : [event];
+
+    for (const sample of samples) {
+      const point = getLocalPoint(sample);
+      const zone = getZoneAt(sample.clientX, sample.clientY);
+
+      handleZone(zone);
+
+      if (point.x === lastPoint.x && point.y === lastPoint.y) continue;
+
+      const segment = {
+        x1: lastPoint.x,
+        y1: lastPoint.y,
+        x2: point.x,
+        y2: point.y,
+        width: getPenWidth(sample),
+        outside: zone.type === "outside"
+      };
+
+      segments.push(segment);
+      drawSegment(segment);
+      lastPoint = point;
+    }
+  }
+
+  function endStroke(event) {
+    if (event.pointerId !== activePointerId) return;
+
+    drawing = false;
+    activePointerId = null;
+    lastPoint = null;
+    isCurrentlyOutside = false;
+    releaseOutsideZone();
+
+    try {
+      sheet.releasePointerCapture(event.pointerId);
+    } catch {}
+  }
+
+  function openModal(modal, focusTarget) {
+    modal.removeAttribute("inert");
+    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("active");
+    setTimeout(() => focusTarget.focus(), 0);
+  }
+
+  function closeModal(modal, returnFocusTo) {
+    if (returnFocusTo) returnFocusTo.focus();
+    else if (modal.contains(document.activeElement)) document.activeElement.blur();
+
+    modal.setAttribute("aria-hidden", "true");
+    modal.setAttribute("inert", "");
+    modal.classList.remove("active");
+  }
+
+  const openGameModal = () => openModal(gameModal, $("game-modal-close"));
+  const closeGameModal = () => closeModal(gameModal, gameButton);
+  const openResultsModal = () => openModal(resultsModal, $("results-modal-close"));
+  const closeResultsModal = () => closeModal(resultsModal, submitButton.hidden ? gameButton : submitButton);
+  const openSettingsModal = () => openModal(settingsModal, $("settings-modal-close"));
+  const closeSettingsModal = () => closeModal(settingsModal, settingsButton);
+
+
+  function renderTraceText() {
+    traceLayer.replaceChildren();
+
+    sheet.querySelectorAll(".row").forEach((row) => {
+      const text = document.createElement("div");
+      text.className = "trace-text";
+      text.textContent = currentActivity;
+      text.style.top = `${row.offsetTop}px`;
+      traceLayer.appendChild(text);
+    });
+  }
+
+  function pickActivity(difficulty) {
+    const pool = ACTIVITIES[difficulty] || ACTIVITIES.easy;
+
+    if (prefs.activityMode === "specific") {
+      const chosen = prefs[`activity_${difficulty}`];
+      if (pool.includes(chosen)) return chosen;
+    }
+
+    const options = pool.length > 1 ? pool.filter((item) => item !== currentActivity) : pool;
+    return options[Math.floor(Math.random() * options.length)];
+  }
+
+  function startTraceGame(difficulty, keepActivity = false) {
+    currentDifficulty = difficulty;
+    if (!keepActivity) currentActivity = pickActivity(difficulty);
+    gameStarted = true;
+    sheet.dataset.difficulty = difficulty;
+
+    clearInk();
+    renderTraceText();
+    submitButton.hidden = false;
+  }
+
+  function stopTraceGame() {
+    gameStarted = false;
+    delete sheet.dataset.difficulty;
+
+    clearInk();
+    traceLayer.replaceChildren();
+    submitButton.hidden = true;
+  }
+
+  function getResultsMessage(overall) {
+    if (overall >= 90) return "Excellent work!";
+    if (overall >= 75) return "Great job!";
+    if (overall >= 60) return "Good effort!";
+    return "Keep practicing!";
+  }
+
+  function showResults({ overall, orientation, trace, completion }) {
+    resultFields.overall.textContent = `${overall}%`;
+    resultFields.orientation.textContent = `${orientation}%`;
+    resultFields.trace.textContent = `${trace}%`;
+    resultFields.completion.textContent = `${completion}%`;
+    resultFields.message.textContent = getResultsMessage(overall);
+
+    openResultsModal();
+  }
+
+  function checkTraceGame() {
+    if (!gameStarted) return;
+
+    if (segments.length === 0) {
+      showResults({ overall: 0, orientation: 0, trace: 0, completion: 0 });
+      return;
+    }
+
+    const insideSegments = segments.filter((s) => !s.outside);
+    const orientation = Math.round((insideSegments.length / segments.length) * 100);
+
+    const targetLength = [...traceLayer.querySelectorAll(".trace-text")]
+      .reduce((total, el) => total + el.getBoundingClientRect().width, 0);
+
+    const writtenLength = insideSegments
+      .reduce((total, { x1, y1, x2, y2 }) => total + Math.hypot(x2 - x1, y2 - y1), 0);
+
+    const trace = targetLength > 0
+      ? Math.min(100, Math.round((writtenLength / targetLength) * 100))
+      : 0;
+
+    const rows = [...sheet.querySelectorAll(".row")];
+    const touched = (x, y, row) =>
+      x >= row.offsetLeft && x <= row.offsetLeft + row.offsetWidth &&
+      y >= row.offsetTop && y <= row.offsetTop + row.offsetHeight;
+
+    const completedRows = rows.filter((row) =>
+      segments.some(({ x1, y1, x2, y2 }) => touched(x1, y1, row) || touched(x2, y2, row))
+    ).length;
+
+    const completion = Math.round((completedRows / rows.length) * 100);
+    const overall = Math.round(orientation * 0.4 + trace * 0.5 + completion * 0.1);
+
+    showResults({ overall, orientation, trace, completion });
+  }
+
+  function handleStartGame() {
+    const selected = document.querySelector('input[name="difficulty"]:checked');
+    if (!selected) return;
+
+    startTraceGame(selected.value);
+    closeGameModal();
+  }
+
+  function handleTryAgain() {
+    closeResultsModal();
+    startTraceGame(currentDifficulty, true);
+  }
+
+  function handleDone() {
+    closeModal(resultsModal, gameButton);
+    stopTraceGame();
+  }
+
+
+  function handleKeydown(event) {
+    const key = event.key.toLowerCase();
+
+    if (key === "escape") {
+      if (settingsModal.classList.contains("active")) closeSettingsModal();
+      else if (resultsModal.classList.contains("active")) closeResultsModal();
+      else if (gameModal.classList.contains("active")) closeGameModal();
+    }
+    if (document.querySelector(".modal.active")) return;
+
+    if (key === "c") clearInk();
+    if (key === "r") console.log("Errors:", errorCount);
+  }
+
+
+  const PREFS_KEY = "writing-is-the-best:settings";
+  const INK_COLORS = { dark: "#1f2937", blue: "#1d4ed8", black: "#000000" };
+
+  const DIFFICULTY_OPTIONS = [
+    { value: "easy", label: "Easy — single words" },
+    { value: "medium", label: "Medium — short phrases" },
+    { value: "hard", label: "Hard — short sentences" }
+  ];
+
+  const PREF_SCHEMA = [
+    {
+      title: "Sound & Feedback",
+      description: "Let learners control how the app responds when their writing crosses a boundary.",
+      controls: [
+        { key: "soundEnabled", type: "checkbox", label: "Boundary warning sound", default: true },
+        {
+          key: "soundIntensity", type: "range", label: "Sound intensity",
+          min: 0, max: 100, step: 5, unit: "%", default: 40,
+          disabledWhen: (p) => !p.soundEnabled
+        },
+        {
+          key: "testSound", type: "button", label: "Play test sound", action: "testSound",
+          disabledWhen: (p) => !p.soundEnabled || p.soundIntensity === 0
+        }
+      ]
+    },
+    {
+      title: "Writing Appearance",
+      description: "Allow learners or teachers to customize the writing surface.",
+      controls: [
+        {
+          key: "inkColor", type: "radio", label: "Ink color", default: "dark",
+          options: [
+            { value: "dark", label: "Dark ink (default)", swatch: INK_COLORS.dark },
+            { value: "blue", label: "Blue ink", swatch: INK_COLORS.blue },
+            { value: "black", label: "Black ink", swatch: INK_COLORS.black }
+          ]
+        },
+        {
+          key: "guideStyle", type: "radio", label: "Writing guide visibility", default: "standard",
+          options: [
+            { value: "standard", label: "Standard guides" },
+            { value: "contrast", label: "High-contrast guides" },
+            { value: "minimal", label: "Minimal visual guides" }
+          ]
+        },
+        {
+          key: "guideVisibility", type: "range", label: "Guide visibility",
+          min: 10, max: 100, step: 5, unit: "%", default: 80
+        },
+        { key: "showErrorLine", type: "checkbox", label: "Show error line", default: true }
+      ]
+    },
+    {
+      title: "Writing Assistance",
+      description: "Adjust how much support appears during the writing activity.",
+      controls: [
+        { key: "showTrace", type: "checkbox", label: "Show text to trace", default: true },
+        {
+          key: "lineSpacing", type: "radio", label: "Line spacing", default: "normal",
+          options: [
+            { value: "compact", label: "Compact" },
+            { value: "normal", label: "Normal" },
+            { value: "wide", label: "Wide — more writing room" }
+          ]
+        },
+        {
+          key: "penThickness", type: "range", label: "Pen thickness",
+          min: 1, max: 8, step: 1, unit: "px", default: 2
+        }
+      ]
+    },
+    {
+      title: "Practice Activities",
+      description: "Let a learner or teacher choose suitable writing practice.",
+      controls: [
+        { key: "defaultDifficulty", type: "radio", label: "Default difficulty", default: "easy", options: DIFFICULTY_OPTIONS },
+        {
+          key: "activityMode", type: "radio", label: "Activity selection", default: "random",
+          options: [
+            { value: "random", label: "Random activity" },
+            { value: "specific", label: "Choose a specific activity" }
+          ]
+        },
+        ...DIFFICULTY_OPTIONS.map(({ value, label }) => ({
+          key: `activity_${value}`, type: "select",
+          label: `${label.split(" — ")[0]} activity`,
+          options: ACTIVITIES[value].map((item) => ({ value: item, label: item })),
+          default: ACTIVITIES[value][0],
+          showWhen: (p) => p.activityMode === "specific"
+        }))
+      ]
+    }
+  ];
+
+  const CONTROLS = PREF_SCHEMA.flatMap((section) => section.controls);
+  const PREF_DEFAULTS = Object.fromEntries(
+    CONTROLS.filter((c) => "default" in c).map((c) => [c.key, c.default])
+  );
+
+  function isValidPref(control, value) {
+    switch (control.type) {
+      case "checkbox": return typeof value === "boolean";
+      case "range": return Number.isFinite(value) && value >= control.min && value <= control.max;
+      case "radio":
+      case "select": return control.options.some((o) => o.value === value);
+      default: return false;
+    }
+  }
+
+  function loadPrefs() {
+    let saved = {};
+    try {
+      saved = JSON.parse(localStorage.getItem(PREFS_KEY)) || {};
+    } catch {}
+
+    const loaded = {};
+    for (const control of CONTROLS) {
+      if (!("default" in control)) continue;
+      loaded[control.key] = isValidPref(control, saved[control.key]) ? saved[control.key] : control.default;
+    }
+    return loaded;
+  }
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    } catch {}
+  }
+
+  const prefs = loadPrefs();
+
+  function controlHTML(c) {
+    const id = `set-${c.key}`;
+    const field = (inner, tag = "div") =>
+      `<${tag} class="setting-field" data-field="${c.key}">${inner}</${tag}>`;
+
+    switch (c.type) {
+      case "checkbox":
+        return field(`<label class="setting-check"><input type="checkbox" id="${id}" data-key="${c.key}"><span>${c.label}</span></label>`);
+
+      case "range":
+        return field(`
+          <div class="setting-row"><label for="${id}">${c.label}</label><output id="out-${c.key}" for="${id}"></output></div>
+          <input type="range" id="${id}" data-key="${c.key}" min="${c.min}" max="${c.max}" step="${c.step}">`);
+
+      case "radio":
+        return field(`
+          <legend class="setting-label">${c.label}</legend>
+          <div class="choice-list">${c.options.map((o) => `
+            <label class="choice">
+              <input type="radio" name="${c.key}" data-key="${c.key}" value="${o.value}">
+              ${o.swatch ? `<span class="swatch" style="background:${o.swatch}"></span>` : ""}
+              <span>${o.label}</span>
+            </label>`).join("")}
+          </div>`, "fieldset");
+
+      case "select":
+        return field(`
+          <label class="setting-label" for="${id}">${c.label}</label>
+          <select class="setting-select" id="${id}" data-key="${c.key}">
+            ${c.options.map((o) => `<option value="${o.value}">${o.label}</option>`).join("")}
+          </select>`);
+
+      case "button":
+        return field(`<button type="button" class="setting-button" data-action="${c.action}">${c.label}</button>`);
+    }
+    return "";
+  }
+
+  function renderSettingsForm() {
+    settingsBody.innerHTML = PREF_SCHEMA.map((section) => `
+      <section class="settings-section">
+        <h3>${section.title}</h3>
+        <p class="section-desc">${section.description}</p>
+        ${section.controls.map(controlHTML).join("")}
+      </section>`).join("");
+  }
+
+  function syncSettingsUI() {
+    for (const c of CONTROLS) {
+      const field = settingsBody.querySelector(`[data-field="${c.key}"]`);
+      const value = prefs[c.key];
+      const disabled = c.disabledWhen ? c.disabledWhen(prefs) : false;
+
+      if (c.showWhen) field.hidden = !c.showWhen(prefs);
+      field.classList.toggle("is-disabled", disabled);
+      field.querySelectorAll("input, select, button").forEach((el) => { el.disabled = disabled; });
+
+      if (c.type === "checkbox") field.querySelector("input").checked = value;
+      if (c.type === "select") field.querySelector("select").value = value;
+      if (c.type === "radio") field.querySelectorAll("input").forEach((el) => { el.checked = el.value === value; });
+      if (c.type === "range") {
+        field.querySelector("input").value = value;
+        field.querySelector("output").textContent = `${value}${c.unit}`;
+      }
+    }
+  }
+
+  function applyPrefs(changedKey) {
+    const root = document.documentElement;
+    const all = !changedKey;
+
+    root.dataset.guides = prefs.guideStyle;
+    root.style.setProperty("--guide-opacity", String(prefs.guideVisibility / 100));
+    traceLayer.classList.toggle("is-hidden", !prefs.showTrace);
+
+    if (root.dataset.spacing !== prefs.lineSpacing) {
+      root.dataset.spacing = prefs.lineSpacing;
+      clearInk();
+      resizeCanvas();
+      if (gameStarted) renderTraceText();
+    }
+
+    redraw();
+
+    if (all || changedKey === "defaultDifficulty") {
+      const radio = document.querySelector(`input[name="difficulty"][value="${prefs.defaultDifficulty}"]`);
+      if (radio) radio.checked = true;
+    }
+  }
+
+  function readPrefValue(control, el) {
+    if (control.type === "checkbox") return el.checked;
+    if (control.type === "range") return Number(el.value);
+    return el.value;
+  }
+
+  function handleSettingsInput(event) {
+    const control = CONTROLS.find((c) => c.key === event.target.dataset.key);
+    if (!control) return;
+
+    prefs[control.key] = readPrefValue(control, event.target);
+    savePrefs();
+    applyPrefs(control.key);
+    syncSettingsUI();
+  }
+
+  function testSound() {
+    initAudio();
+    playErrorSound(true);
+  }
+
+  function handleSettingsClick(event) {
+    const button = event.target.closest("[data-action]");
+    if (button && button.dataset.action === "testSound") testSound();
+  }
+
+  function resetPrefs() {
+    Object.assign(prefs, PREF_DEFAULTS);
+    savePrefs();
+    applyPrefs();
+    syncSettingsUI();
+  }
+
+
+  buildRows();
+  renderSettingsForm();
+  syncSettingsUI();
+  applyPrefs();
+
+  window.addEventListener("resize", resizeCanvas);
+  document.addEventListener("keydown", handleKeydown);
+
+  sheet.addEventListener("pointerdown", handlePointerDown);
+  sheet.addEventListener("pointermove", handlePointerMove);
+  sheet.addEventListener("pointerup", endStroke);
+  sheet.addEventListener("pointercancel", endStroke);
+  sheet.addEventListener("contextmenu", (e) => e.preventDefault());
+  sheet.addEventListener("stroke-outside", (e) => {
+    console.log("Out of line:", e.detail.zone, "| Total errors:", e.detail.errorCount);
+  });
+
+  gameButton.addEventListener("click", openGameModal);
+  $("game-modal-close").addEventListener("click", closeGameModal);
+  $("game-modal-overlay").addEventListener("click", closeGameModal);
+  $("start-game-button").addEventListener("click", handleStartGame);
+
+  submitButton.addEventListener("click", checkTraceGame);
+  $("results-modal-close").addEventListener("click", closeResultsModal);
+  $("results-modal-overlay").addEventListener("click", closeResultsModal);
+  $("try-again-button").addEventListener("click", handleTryAgain);
+  $("results-done-button").addEventListener("click", handleDone);
+
+  settingsButton.addEventListener("click", openSettingsModal);
+  $("settings-modal-close").addEventListener("click", closeSettingsModal);
+  $("settings-modal-overlay").addEventListener("click", closeSettingsModal);
+  $("settings-done-button").addEventListener("click", closeSettingsModal);
+  $("settings-reset-button").addEventListener("click", resetPrefs);
+  settingsBody.addEventListener("input", handleSettingsInput);
+  settingsBody.addEventListener("click", handleSettingsClick);
+
+  resizeCanvas();
+})();
+</script>
+</body>
+</html>
