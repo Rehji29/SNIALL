@@ -1,11 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Writing Is The Best</title>
-<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
 <style>
+.clear-button{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:34px;height:34px;padding:0;border:none;border-radius:11px;background:#f2f2f2;color:#000;cursor:pointer;transition:background .15s ease,color .15s ease,transform .15s ease}
+.clear-button:hover{background:#ffe5e3;color:#d00000}
+.clear-button:active{transform:scale(.95)}
+.trace-layer{left:0;right:0;width:100%;overflow:visible}
 </style>
 </head>
 <body>
@@ -13,22 +20,23 @@
   <header class="header">
     <h1 class="title">WRITING IS THE BEST</h1>
     <div class="header-actions">
+      <button type="button" class="exit-fullscreen-button" id="exit-fullscreen-button">Exit full screen</button>
+      <button type="button" class="clear-button" id="clear-button" aria-label="Clear writing" title="Clear writing">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>
       <button type="button" class="settings-button" id="settings-button" aria-label="Settings" title="Settings">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
       <button type="button" class="game-toggle" id="game-button">Play A Game</button>
     </div>
   </header>
-
   <section class="sheet" id="sheet" aria-label="Handwriting practice area">
-    <div id="trace-layer" class="trace-layer"></div>
+    <canvas id="trace-layer" class="trace-layer" aria-hidden="true"></canvas>
     <canvas id="ink" aria-label="Handwriting drawing area"></canvas>
   </section>
-
   <div class="game-actions">
-    <a class="home-link" id="home-link" href="index.html">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-      <span>Back to Home</span>
+    <a class="home-link" id="home-link" href="saket.html">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg><span>Back to Home</span>
     </a>
     <button type="button" id="submit-game-button" class="submit-game-button" hidden>Submit</button>
   </div>
@@ -39,34 +47,14 @@
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="game-modal-title">
     <button type="button" class="modal-close" id="game-modal-close" aria-label="Close">×</button>
     <h2 id="game-modal-title">Trace Game</h2>
-
     <div class="difficulty-section">
       <h3>Choose Difficulty</h3>
       <div class="difficulty-options">
-        <label class="difficulty-card">
-          <input type="radio" name="difficulty" value="easy" checked>
-          <span class="difficulty-content">
-            <span class="difficulty-title">Easy</span>
-            <span class="difficulty-description">Simple letters with clear guides</span>
-          </span>
-        </label>
-        <label class="difficulty-card">
-          <input type="radio" name="difficulty" value="medium">
-          <span class="difficulty-content">
-            <span class="difficulty-title">Medium</span>
-            <span class="difficulty-description">More challenging letters and paths</span>
-          </span>
-        </label>
-        <label class="difficulty-card">
-          <input type="radio" name="difficulty" value="hard">
-          <span class="difficulty-content">
-            <span class="difficulty-title">Hard</span>
-            <span class="difficulty-description">Complex tracing with more fun</span>
-          </span>
-        </label>
+        <label class="difficulty-card"><input type="radio" name="difficulty" value="easy" checked="checked" /><span class="difficulty-content"><span class="difficulty-title">Easy</span><span class="difficulty-description">Single words with clear guides</span></span></label>
+        <label class="difficulty-card"><input type="radio" name="difficulty" value="medium" /><span class="difficulty-content"><span class="difficulty-title">Medium</span><span class="difficulty-description">Short phrases</span></span></label>
+        <label class="difficulty-card"><input type="radio" name="difficulty" value="hard" /><span class="difficulty-content"><span class="difficulty-title">Hard</span><span class="difficulty-description">Full sentences to trace</span></span></label>
       </div>
     </div>
-
     <button type="button" class="start-game-button" id="start-game-button">Start</button>
   </div>
 </div>
@@ -76,18 +64,13 @@
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="results-title">
     <button type="button" class="modal-close" id="results-modal-close" aria-label="Close results">×</button>
     <h2 id="results-title">Results</h2>
-
-    <div class="results-score">
-      <span id="results-percentage" class="results-percentage">0%</span>
-      <span id="results-message" class="results-message">Good job!</span>
-    </div>
-
+    <div class="results-score"><span id="results-percentage" class="results-percentage">0%</span><span id="results-message" class="results-message">Good job!</span></div>
     <div class="results-breakdown">
       <div class="result-row"><span>Line Orientation</span><strong id="orientation-score">0%</strong></div>
       <div class="result-row"><span>Trace Coverage</span><strong id="trace-score">0%</strong></div>
+      <div class="result-row"><span>Trace Accuracy</span><strong id="accuracy-score">0%</strong></div>
       <div class="result-row"><span>Completion</span><strong id="completion-score">0%</strong></div>
     </div>
-
     <div class="results-actions">
       <button type="button" class="try-again-button" id="try-again-button">Try Again</button>
       <button type="button" class="results-done-button" id="results-done-button">Done</button>
@@ -100,9 +83,7 @@
   <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="settings-title">
     <button type="button" class="modal-close" id="settings-modal-close" aria-label="Close settings">×</button>
     <h2 id="settings-title">Settings</h2>
-
     <div id="settings-body"></div>
-
     <div class="settings-actions">
       <button type="button" class="try-again-button" id="settings-reset-button">Reset to defaults</button>
       <button type="button" class="results-done-button" id="settings-done-button">Done</button>
@@ -117,22 +98,26 @@
   const sheet = $("sheet");
   const canvas = $("ink");
   const ctx = canvas.getContext("2d");
-  const traceLayer = $("trace-layer");
+  const traceCanvas = $("trace-layer");
+  const traceCtx = traceCanvas.getContext("2d");
 
   const gameButton = $("game-button");
   const submitButton = $("submit-game-button");
+  const clearButton = $("clear-button");
   const gameModal = $("game-modal");
   const resultsModal = $("results-modal");
   const settingsModal = $("settings-modal");
   const settingsButton = $("settings-button");
   const settingsBody = $("settings-body");
+  const exitFullscreenButton = $("exit-fullscreen-button");
 
   const resultFields = {
     overall: $("results-percentage"),
     orientation: $("orientation-score"),
     trace: $("trace-score"),
+    accuracy: $("accuracy-score"),
     completion: $("completion-score"),
-    message: $("results-message")
+    message: $("results-message"),
   };
 
   const SETTINGS = {
@@ -141,23 +126,30 @@
     errorFrequencyStart: 260,
     errorFrequencyEnd: 150,
     errorDuration: 0.2,
-    soundCooldown: 120
+    soundCooldown: 120,
   };
 
+  // Font used for the letters to trace. Needs a single-story "a" (Andika has it).
+  const TRACE_FONT = "Andika";
+  const traceFont = (size) => `700 ${size}px "${TRACE_FONT}", sans-serif`;
+  // Letters that reach the top blue line. Everything else stays between the red and bottom blue line.
+  const TALL = /[A-Zbdfhkl]/;
+  // How far (as a share of row height) ink may stray from the letter and still count as tracing it.
+  const TOLERANCE_RATIO = 0.12;
 
   const ACTIVITIES = {
     easy: ["cat", "sun", "ball", "book", "fish"],
     medium: ["red ball", "my book", "blue cup", "my bag", "soft toy"],
-    hard: [
-      "I see a red ball.",
-      "The cat is small.",
-      "I have my book.",
-      "The cup is blue.",
-      "The sun is hot."
-    ]
+    hard: ["I see a red ball.", "The cat is small.", "I have my book.", "The cup is blue.", "The sun is hot."],
   };
 
-  const ROW_COUNT = 3;
+  const DEFAULT_ROW_COUNT = 3;
+  const FS_TOP = 56;
+  const FS_BOTTOM = 66;
+  let rowCount = DEFAULT_ROW_COUNT;
+  let layoutKey = "";
+  let geom = [];
+  let fontMetrics = null;
 
   const segments = [];
 
@@ -174,7 +166,9 @@
   let currentDifficulty = "easy";
   let currentActivity = "";
 
+  /* ---------- Layout ---------- */
   function buildRows() {
+    sheet.querySelectorAll(":scope > .row, :scope > .zone.outside").forEach((el) => el.remove());
     const rowHTML = (n) => `
       <div class="row" data-row="${n}">
         <div class="line blue" aria-hidden="true"></div>
@@ -182,11 +176,159 @@
         <div class="line blue" aria-hidden="true"></div>
       </div>
       <div class="zone outside" data-zone="outside-${n}" aria-hidden="true"></div>`;
-
-    const html = Array.from({ length: ROW_COUNT }, (_, i) => rowHTML(i + 1)).join("");
-    traceLayer.insertAdjacentHTML("beforebegin", html);
+    const html = Array.from({ length: rowCount }, (_, i) => rowHTML(i + 1)).join("");
+    traceCanvas.insertAdjacentHTML("beforebegin", html);
   }
 
+  function applyLayout() {
+    const root = document.documentElement;
+    let rows = DEFAULT_ROW_COUNT;
+
+    if (prefs.fullScreen) {
+      const available = Math.max(240, window.innerHeight - FS_TOP - FS_BOTTOM);
+      const targetPitch = Math.min(150, Math.max(90, available / 4));
+      rows = Math.max(2, Math.floor(available / targetPitch));
+      const pitch = available / rows;
+      const rowHeight = Math.floor(pitch * 0.56);
+      const outsideHeight = Math.floor(pitch - rowHeight);
+      root.style.setProperty("--row-height", `${rowHeight}px`);
+      root.style.setProperty("--outside-height", `${outsideHeight}px`);
+    } else {
+      root.style.removeProperty("--row-height");
+      root.style.removeProperty("--outside-height");
+    }
+
+    const key = [
+      prefs.fullScreen,
+      prefs.lineSpacing,
+      rows,
+      root.style.getPropertyValue("--row-height"),
+      root.style.getPropertyValue("--outside-height"),
+    ].join("|");
+
+    if (key === layoutKey) return;
+    layoutKey = key;
+    rowCount = rows;
+    buildRows();
+    computeGeometry();
+    clearInk();
+    resizeCanvas();
+  }
+
+  function refreshLayout() {
+    applyLayout();
+    computeGeometry();
+    resizeCanvas();
+  }
+
+  /* ---------- Font metrics & geometry ---------- */
+  const guideW = () =>
+    parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--guide-width")) || 2;
+
+  function getFontMetrics() {
+    if (fontMetrics) return fontMetrics;
+    const c = document.createElement("canvas").getContext("2d");
+    c.font = traceFont(200);
+    const xh = c.measureText("x").actualBoundingBoxAscent / 200;
+    const dc = c.measureText("gjpqy").actualBoundingBoxDescent / 200;
+    fontMetrics = { xHeight: xh > 0.2 ? xh : 0.5, descent: dc > 0.05 ? dc : 0.22 };
+    return fontMetrics;
+  }
+
+  // Zone rectangles in sheet coordinates (so pointer moves never touch the DOM).
+  function computeGeometry() {
+    const gw = guideW();
+    const m = getFontMetrics();
+    geom = [...sheet.querySelectorAll(".row")].map((row) => {
+      const out = row.nextElementSibling;
+      const H = row.offsetHeight;
+      const size = (H - gw) / 2 / m.xHeight;
+      const outH = out.offsetHeight;
+      const descender = Math.max(0, Math.min(Math.ceil(m.descent * size + gw), outH - 1));
+      return {
+        out,
+        left: row.offsetLeft,
+        right: row.offsetLeft + row.offsetWidth,
+        top: row.offsetTop,
+        writeBottom: row.offsetTop + H + descender, // writing zone includes room for y, g, j, p, q tails
+        outBottom: out.offsetTop + outH,
+      };
+    });
+  }
+
+  function getZoneAt(x, y) {
+    for (let i = 0; i < geom.length; i++) {
+      const g = geom[i];
+      if (x < g.left || x > g.right) continue;
+      if (y >= g.top && y <= g.writeBottom) return { type: "writing", element: null, name: `writing-${i + 1}` };
+      if (y > g.writeBottom && y <= g.outBottom)
+        return { type: "outside", element: g.out, name: g.out.dataset.zone };
+    }
+    return { type: "outside", element: null, name: "unknown" };
+  }
+
+  /* ---------- Trace text (drawn on a canvas so it sits exactly on the guides) ---------- */
+  // Baseline = bottom blue line. x-height letters reach the red line. Tall letters reach the top blue line.
+  function traceGlyphs() {
+    const gw = guideW();
+    const m = getFontMetrics();
+    const probe = document.createElement("canvas").getContext("2d");
+    const list = [];
+
+    sheet.querySelectorAll(".row").forEach((row, r) => {
+      const H = row.offsetHeight;
+      const size = (H - gw) / 2 / m.xHeight;
+      probe.font = traceFont(size);
+      const spacing = size * 0.06;
+
+      let width = 0;
+      const chars = [...currentActivity].map((ch) => {
+        const met = probe.measureText(ch);
+        width += met.width + spacing;
+        return { ch, adv: met.width + spacing, asc: met.actualBoundingBoxAscent };
+      });
+
+      // If the text is wider than the row, squeeze it sideways only so heights stay on the guides.
+      const sx = Math.min(1, row.offsetWidth / Math.max(1, width));
+      const baseline = row.offsetTop + H - gw / 2;
+      let x = row.offsetLeft;
+
+      for (const c of chars) {
+        const tall = TALL.test(c.ch) && c.asc > 0;
+        list.push({ ch: c.ch, x, y: baseline, size, sx, sy: tall ? (H - gw) / c.asc : 1, row: r });
+        x += c.adv * sx;
+      }
+    });
+    return list;
+  }
+
+  function drawGlyphs(c, glyphs, strokeWidth = 0) {
+    c.textBaseline = "alphabetic";
+    c.lineJoin = "round";
+    for (const g of glyphs) {
+      if (g.ch === " ") continue;
+      c.save();
+      c.translate(g.x, g.y);
+      c.scale(g.sx, g.sy);
+      c.font = traceFont(g.size);
+      if (strokeWidth) {
+        c.lineWidth = strokeWidth;
+        c.strokeText(g.ch, 0, 0);
+      }
+      c.fillText(g.ch, 0, 0);
+      c.restore();
+    }
+  }
+
+  function renderTraceText() {
+    const rect = sheet.getBoundingClientRect();
+    traceCtx.clearRect(0, 0, rect.width, rect.height);
+    if (!gameStarted || !currentActivity) return;
+    traceCtx.fillStyle = "rgba(0,0,0,.25)";
+    drawGlyphs(traceCtx, traceGlyphs());
+  }
+
+  /* ---------- Audio ---------- */
   function initAudio() {
     if (!audioContext) {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -197,14 +339,11 @@
 
   function playErrorSound(ignoreCooldown = false) {
     if (!audioContext || !prefs.soundEnabled || prefs.soundIntensity === 0) return;
-
     const now = audioContext.currentTime;
     if (!ignoreCooldown && now - lastErrorSoundTime < SETTINGS.soundCooldown / 1000) return;
     lastErrorSoundTime = now;
 
-    // 40% intensity matches the original volume (0.2).
     const peak = (prefs.soundIntensity / 100) * 0.5;
-
     const end = now + SETTINGS.errorDuration;
     const oscillator = audioContext.createOscillator();
     const gain = audioContext.createGain();
@@ -212,7 +351,6 @@
     oscillator.type = "square";
     oscillator.frequency.setValueAtTime(SETTINGS.errorFrequencyStart, now);
     oscillator.frequency.exponentialRampToValueAtTime(SETTINGS.errorFrequencyEnd, end);
-
     gain.gain.setValueAtTime(0.0001, now);
     gain.gain.exponentialRampToValueAtTime(peak, now + 0.01);
     gain.gain.exponentialRampToValueAtTime(0.0001, end);
@@ -223,9 +361,9 @@
     oscillator.stop(end + 0.02);
   }
 
+  /* ---------- Ink ---------- */
   function drawSegment({ x1, y1, x2, y2, width, outside }) {
     if (outside && !prefs.showErrorLine) return;
-
     ctx.strokeStyle = outside ? SETTINGS.errorColor : INK_COLORS[prefs.inkColor];
     ctx.lineWidth = width;
     ctx.beginPath();
@@ -243,15 +381,15 @@
   function resizeCanvas() {
     const rect = sheet.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = Math.round(rect.width * dpr);
-    canvas.height = Math.round(rect.height * dpr);
-
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
+    for (const [cv, c] of [[canvas, ctx], [traceCanvas, traceCtx]]) {
+      cv.width = Math.round(rect.width * dpr);
+      cv.height = Math.round(rect.height * dpr);
+      c.setTransform(dpr, 0, 0, dpr, 0, 0);
+      c.lineCap = "round";
+      c.lineJoin = "round";
+    }
     redraw();
+    renderTraceText();
   }
 
   function releaseOutsideZone() {
@@ -269,24 +407,9 @@
     redraw();
   }
 
-
   function getLocalPoint({ clientX, clientY }) {
     const rect = sheet.getBoundingClientRect();
     return { x: clientX - rect.left, y: clientY - rect.top };
-  }
-
-  function getZoneAt(clientX, clientY) {
-    for (const zone of sheet.querySelectorAll(".zone")) {
-      const r = zone.getBoundingClientRect();
-      if (clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom) {
-        return {
-          type: zone.classList.contains("outside") ? "outside" : "writing",
-          element: zone,
-          name: zone.dataset.zone
-        };
-      }
-    }
-    return { type: "outside", element: null, name: "unknown" };
   }
 
   function handleZone(zone) {
@@ -295,24 +418,16 @@
       isCurrentlyOutside = false;
       return;
     }
-
-    if (currentOutsideZone && currentOutsideZone !== zone.element) {
-      currentOutsideZone.classList.remove("hit-out");
-    }
-
+    if (currentOutsideZone && currentOutsideZone !== zone.element) currentOutsideZone.classList.remove("hit-out");
     if (zone.element) {
       if (prefs.showErrorLine) zone.element.classList.add("hit-out");
       currentOutsideZone = zone.element;
     }
-
     if (!isCurrentlyOutside) {
       isCurrentlyOutside = true;
       errorCount++;
       playErrorSound();
-
-      sheet.dispatchEvent(new CustomEvent("stroke-outside", {
-        detail: { zone: zone.name, errorCount }
-      }));
+      sheet.dispatchEvent(new CustomEvent("stroke-outside", { detail: { zone: zone.name, errorCount } }));
     }
   }
 
@@ -331,7 +446,6 @@
 
   function handlePointerDown(event) {
     if (!isAllowedPointer(event) || drawing) return;
-
     event.preventDefault();
     initAudio();
 
@@ -342,33 +456,34 @@
     lastPoint = getLocalPoint(event);
     isCurrentlyOutside = false;
 
-    handleZone(getZoneAt(event.clientX, event.clientY));
+    const zone = getZoneAt(lastPoint.x, lastPoint.y);
+    handleZone(zone);
+
+    // A tap leaves a dot (needed for the dot of i / j and full stops).
+    const dot = {
+      x1: lastPoint.x, y1: lastPoint.y, x2: lastPoint.x + 0.01, y2: lastPoint.y,
+      width: getPenWidth(event), outside: zone.type === "outside",
+    };
+    segments.push(dot);
+    drawSegment(dot);
   }
 
   function handlePointerMove(event) {
     if (!drawing || event.pointerId !== activePointerId) return;
-
     event.preventDefault();
 
     const samples = event.getCoalescedEvents ? event.getCoalescedEvents() : [event];
-
     for (const sample of samples) {
       const point = getLocalPoint(sample);
-      const zone = getZoneAt(sample.clientX, sample.clientY);
-
+      const zone = getZoneAt(point.x, point.y);
       handleZone(zone);
 
       if (point.x === lastPoint.x && point.y === lastPoint.y) continue;
 
       const segment = {
-        x1: lastPoint.x,
-        y1: lastPoint.y,
-        x2: point.x,
-        y2: point.y,
-        width: getPenWidth(sample),
-        outside: zone.type === "outside"
+        x1: lastPoint.x, y1: lastPoint.y, x2: point.x, y2: point.y,
+        width: getPenWidth(sample), outside: zone.type === "outside",
       };
-
       segments.push(segment);
       drawSegment(segment);
       lastPoint = point;
@@ -377,18 +492,15 @@
 
   function endStroke(event) {
     if (event.pointerId !== activePointerId) return;
-
     drawing = false;
     activePointerId = null;
     lastPoint = null;
     isCurrentlyOutside = false;
     releaseOutsideZone();
-
-    try {
-      sheet.releasePointerCapture(event.pointerId);
-    } catch {}
+    try { sheet.releasePointerCapture(event.pointerId); } catch {}
   }
 
+  /* ---------- Modals ---------- */
   function openModal(modal, focusTarget) {
     modal.removeAttribute("inert");
     modal.setAttribute("aria-hidden", "false");
@@ -399,7 +511,6 @@
   function closeModal(modal, returnFocusTo) {
     if (returnFocusTo) returnFocusTo.focus();
     else if (modal.contains(document.activeElement)) document.activeElement.blur();
-
     modal.setAttribute("aria-hidden", "true");
     modal.setAttribute("inert", "");
     modal.classList.remove("active");
@@ -412,27 +523,13 @@
   const openSettingsModal = () => openModal(settingsModal, $("settings-modal-close"));
   const closeSettingsModal = () => closeModal(settingsModal, settingsButton);
 
-
-  function renderTraceText() {
-    traceLayer.replaceChildren();
-
-    sheet.querySelectorAll(".row").forEach((row) => {
-      const text = document.createElement("div");
-      text.className = "trace-text";
-      text.textContent = currentActivity;
-      text.style.top = `${row.offsetTop}px`;
-      traceLayer.appendChild(text);
-    });
-  }
-
+  /* ---------- Game ---------- */
   function pickActivity(difficulty) {
     const pool = ACTIVITIES[difficulty] || ACTIVITIES.easy;
-
     if (prefs.activityMode === "specific") {
       const chosen = prefs[`activity_${difficulty}`];
       if (pool.includes(chosen)) return chosen;
     }
-
     const options = pool.length > 1 ? pool.filter((item) => item !== currentActivity) : pool;
     return options[Math.floor(Math.random() * options.length)];
   }
@@ -442,7 +539,6 @@
     if (!keepActivity) currentActivity = pickActivity(difficulty);
     gameStarted = true;
     sheet.dataset.difficulty = difficulty;
-
     clearInk();
     renderTraceText();
     submitButton.hidden = false;
@@ -451,9 +547,8 @@
   function stopTraceGame() {
     gameStarted = false;
     delete sheet.dataset.difficulty;
-
     clearInk();
-    traceLayer.replaceChildren();
+    renderTraceText();
     submitButton.hidden = true;
   }
 
@@ -464,56 +559,122 @@
     return "Keep practicing!";
   }
 
-  function showResults({ overall, orientation, trace, completion }) {
+  function showResults({ overall, orientation, trace, accuracy, completion }) {
     resultFields.overall.textContent = `${overall}%`;
     resultFields.orientation.textContent = `${orientation}%`;
     resultFields.trace.textContent = `${trace}%`;
+    resultFields.accuracy.textContent = `${accuracy}%`;
     resultFields.completion.textContent = `${completion}%`;
     resultFields.message.textContent = getResultsMessage(overall);
-
     openResultsModal();
   }
 
+  // Scores the real shape: the target letters are rasterised and compared with the ink.
+  //  coverage    = how much of the letters was actually traced
+  //  accuracy    = how much of the ink lies on the letters
+  //  orientation = how much of the ink stays inside the writing lines
+  //  completion  = rows that are mostly traced
+  // A plain line scores low because it covers little of the letters and most of it is not on them.
   function checkTraceGame() {
     if (!gameStarted) return;
+    const zero = { overall: 0, orientation: 0, trace: 0, accuracy: 0, completion: 0 };
+    if (segments.length === 0 || geom.length === 0) return showResults(zero);
 
-    if (segments.length === 0) {
-      showResults({ overall: 0, orientation: 0, trace: 0, completion: 0 });
-      return;
+    const rect = sheet.getBoundingClientRect();
+    const W = Math.ceil(rect.width);
+    const Ht = Math.ceil(rect.height);
+    const glyphs = traceGlyphs();
+    const tol = Math.max(3.5, geom[0].writeBottom * 0 + sheet.querySelector(".row").offsetHeight * TOLERANCE_RATIO);
+
+    const make = () => {
+      const c = document.createElement("canvas");
+      c.width = W;
+      c.height = Ht;
+      const cx = c.getContext("2d", { willReadFrequently: true });
+      cx.fillStyle = cx.strokeStyle = "#000";
+      cx.lineCap = cx.lineJoin = "round";
+      return cx;
+    };
+
+    const target = make(); // exact letters
+    drawGlyphs(target, glyphs);
+    const near = make(); // letters grown by the tolerance
+    drawGlyphs(near, glyphs, tol * 2);
+    const ink = make(); // ink inside the lines, grown by the tolerance
+    ink.lineWidth = tol * 2;
+    for (const s of segments) {
+      if (s.outside) continue;
+      ink.beginPath();
+      ink.moveTo(s.x1, s.y1);
+      ink.lineTo(s.x2, s.y2);
+      ink.stroke();
     }
 
-    const insideSegments = segments.filter((s) => !s.outside);
-    const orientation = Math.round((insideSegments.length / segments.length) * 100);
+    const T = target.getImageData(0, 0, W, Ht).data;
+    const N = near.getImageData(0, 0, W, Ht).data;
+    const I = ink.getImageData(0, 0, W, Ht).data;
 
-    const targetLength = [...traceLayer.querySelectorAll(".trace-text")]
-      .reduce((total, el) => total + el.getBoundingClientRect().width, 0);
+    const rowOf = (y) => {
+      let r = 0;
+      for (let i = 0; i < geom.length; i++) if (y >= geom[i].top) r = i;
+      return r;
+    };
 
-    const writtenLength = insideSegments
-      .reduce((total, { x1, y1, x2, y2 }) => total + Math.hypot(x2 - x1, y2 - y1), 0);
+    let total = 0, hit = 0;
+    const rowTotal = new Array(geom.length).fill(0);
+    const rowHit = new Array(geom.length).fill(0);
+    for (let y = 0; y < Ht; y += 2) {
+      const r = rowOf(y);
+      for (let x = 0; x < W; x += 2) {
+        const a = (y * W + x) * 4 + 3;
+        if (T[a] > 127) {
+          total++;
+          rowTotal[r]++;
+          if (I[a] > 127) {
+            hit++;
+            rowHit[r]++;
+          }
+        }
+      }
+    }
 
-    const trace = targetLength > 0
-      ? Math.min(100, Math.round((writtenLength / targetLength) * 100))
-      : 0;
+    let samples = 0, onLetters = 0, inside = 0;
+    for (const s of segments) {
+      const len = Math.hypot(s.x2 - s.x1, s.y2 - s.y1);
+      const n = Math.max(1, Math.ceil(len / 2));
+      for (let k = 0; k < n; k++) {
+        const t = (k + 0.5) / n;
+        const px = Math.min(W - 1, Math.max(0, Math.round(s.x1 + (s.x2 - s.x1) * t)));
+        const py = Math.min(Ht - 1, Math.max(0, Math.round(s.y1 + (s.y2 - s.y1) * t)));
+        samples++;
+        if (!s.outside) inside++;
+        if (N[(py * W + px) * 4 + 3] > 127) onLetters++;
+      }
+    }
 
-    const rows = [...sheet.querySelectorAll(".row")];
-    const touched = (x, y, row) =>
-      x >= row.offsetLeft && x <= row.offsetLeft + row.offsetWidth &&
-      y >= row.offsetTop && y <= row.offsetTop + row.offsetHeight;
+    const coverage = total ? (hit / total) * 100 : 0;
+    const accuracy = samples ? (onLetters / samples) * 100 : 0;
+    const orientation = samples ? (inside / samples) * 100 : 0;
+    const doneRows = rowTotal.filter((t, i) => t > 0 && rowHit[i] / t >= 0.5).length;
+    const rowsWithText = rowTotal.filter((t) => t > 0).length;
+    const completion = rowsWithText ? (doneRows / rowsWithText) * 100 : 0;
 
-    const completedRows = rows.filter((row) =>
-      segments.some(({ x1, y1, x2, y2 }) => touched(x1, y1, row) || touched(x2, y2, row))
-    ).length;
+    // Both coverage and accuracy must be high. Staying inside the lines is a bonus, not a free pass.
+    const quality = Math.min(100, ((coverage * accuracy) / 100) / 0.8);
+    const overall = quality * (0.8 + 0.2 * (orientation / 100));
 
-    const completion = Math.round((completedRows / rows.length) * 100);
-    const overall = Math.round(orientation * 0.4 + trace * 0.5 + completion * 0.1);
-
-    showResults({ overall, orientation, trace, completion });
+    showResults({
+      overall: Math.round(overall),
+      orientation: Math.round(orientation),
+      trace: Math.round(coverage),
+      accuracy: Math.round(accuracy),
+      completion: Math.round(completion),
+    });
   }
 
   function handleStartGame() {
     const selected = document.querySelector('input[name="difficulty"]:checked');
     if (!selected) return;
-
     startTraceGame(selected.value);
     closeGameModal();
   }
@@ -528,78 +689,66 @@
     stopTraceGame();
   }
 
-
   function handleKeydown(event) {
     const key = event.key.toLowerCase();
-
     if (key === "escape") {
       if (settingsModal.classList.contains("active")) closeSettingsModal();
       else if (resultsModal.classList.contains("active")) closeResultsModal();
       else if (gameModal.classList.contains("active")) closeGameModal();
+      else if (prefs.fullScreen) setFullScreen(false);
     }
     if (document.querySelector(".modal.active")) return;
-
     if (key === "c") clearInk();
-    if (key === "r") console.log("Errors:", errorCount);
   }
 
-
+  /* ---------- Settings ---------- */
   const PREFS_KEY = "writing-is-the-best:settings";
   const INK_COLORS = { dark: "#1f2937", blue: "#1d4ed8", black: "#000000" };
 
   const DIFFICULTY_OPTIONS = [
     { value: "easy", label: "Easy — single words" },
     { value: "medium", label: "Medium — short phrases" },
-    { value: "hard", label: "Hard — short sentences" }
+    { value: "hard", label: "Hard — short sentences" },
   ];
 
   const PREF_SCHEMA = [
     {
       title: "Sound & Feedback",
-      description: "Customize your sound to make every writing activity comfortable!",
+      description: "Let learners control how the app responds when their writing crosses a boundary.",
       controls: [
         { key: "soundEnabled", type: "checkbox", label: "Boundary warning sound", default: true },
-        {
-          key: "soundIntensity", type: "range", label: "Sound intensity",
-          min: 0, max: 100, step: 5, unit: "%", default: 40,
-          disabledWhen: (p) => !p.soundEnabled
-        },
-        {
-          key: "testSound", type: "button", label: "Play test sound", action: "testSound",
-          disabledWhen: (p) => !p.soundEnabled || p.soundIntensity === 0
-        }
-      ]
+        { key: "soundIntensity", type: "range", label: "Sound intensity", min: 0, max: 100, step: 5, unit: "%", default: 40, disabledWhen: (p) => !p.soundEnabled },
+        { key: "testSound", type: "button", label: "Play test sound", action: "testSound", disabledWhen: (p) => !p.soundEnabled || p.soundIntensity === 0 },
+      ],
     },
     {
       title: "Writing Appearance",
-      description: "Personalize your ink and guides to create your writing space!",
+      description: "Allow learners or teachers to customize the writing surface.",
       controls: [
+        { key: "fullScreen", type: "checkbox", default: false, label: "Full screen writing (bigger, longer, roomier lines)" },
         {
           key: "inkColor", type: "radio", label: "Ink color", default: "dark",
           options: [
             { value: "dark", label: "Dark ink (default)", swatch: INK_COLORS.dark },
             { value: "blue", label: "Blue ink", swatch: INK_COLORS.blue },
-            { value: "black", label: "Black ink", swatch: INK_COLORS.black }
-          ]
+            { value: "black", label: "Black ink", swatch: INK_COLORS.black },
+          ],
         },
         {
           key: "guideStyle", type: "radio", label: "Writing guide visibility", default: "standard",
           options: [
             { value: "standard", label: "Standard guides" },
             { value: "contrast", label: "High-contrast guides" },
-            { value: "minimal", label: "Minimal visual guides" }
-          ]
+            { value: "minimal", label: "Minimal visual guides" },
+          ],
         },
-        {
-          key: "guideVisibility", type: "range", label: "Guide visibility",
-          min: 10, max: 100, step: 5, unit: "%", default: 80
-        },
-        { key: "showErrorLine", type: "checkbox", label: "Show error line", default: true }
-      ]
+        { key: "guideVisibility", type: "range", label: "Guide visibility", min: 10, max: 100, step: 5, unit: "%", default: 80 },
+        { key: "showErrorLine", type: "checkbox", label: "Show error line", default: true },
+      ],
     },
     {
       title: "Writing Assistance",
-      description: "Adjust writing tools",
+      description: "Adjust how much support appears during the writing activity.",
       controls: [
         { key: "showTrace", type: "checkbox", label: "Show text to trace", default: true },
         {
@@ -607,42 +756,40 @@
           options: [
             { value: "compact", label: "Compact" },
             { value: "normal", label: "Normal" },
-            { value: "wide", label: "Wide — more writing room" }
-          ]
+            { value: "wide", label: "Wide — more writing room" },
+          ],
+          disabledWhen: (p) => p.fullScreen,
         },
-        {
-          key: "penThickness", type: "range", label: "Pen thickness",
-          min: 1, max: 8, step: 1, unit: "px", default: 2
-        }
-      ]
+        { key: "penThickness", type: "range", label: "Pen thickness", min: 1, max: 8, step: 1, unit: "px", default: 2 },
+      ],
     },
     {
       title: "Practice Activities",
-      description: "Choose your challenge and level up your writing skills!",
+      description: "Let a learner or teacher choose suitable writing practice.",
       controls: [
         { key: "defaultDifficulty", type: "radio", label: "Default difficulty", default: "easy", options: DIFFICULTY_OPTIONS },
         {
           key: "activityMode", type: "radio", label: "Activity selection", default: "random",
           options: [
             { value: "random", label: "Random activity" },
-            { value: "specific", label: "Choose a specific activity" }
-          ]
+            { value: "specific", label: "Choose a specific activity" },
+          ],
         },
         ...DIFFICULTY_OPTIONS.map(({ value, label }) => ({
-          key: `activity_${value}`, type: "select",
+          key: `activity_${value}`,
+          type: "select",
           label: `${label.split(" — ")[0]} activity`,
           options: ACTIVITIES[value].map((item) => ({ value: item, label: item })),
           default: ACTIVITIES[value][0],
-          showWhen: (p) => p.activityMode === "specific"
-        }))
-      ]
-    }
+          showWhen: (p) => p.activityMode === "specific",
+        })),
+      ],
+    },
   ];
 
   const CONTROLS = PREF_SCHEMA.flatMap((section) => section.controls);
-  const PREF_DEFAULTS = Object.fromEntries(
-    CONTROLS.filter((c) => "default" in c).map((c) => [c.key, c.default])
-  );
+  const PREF_DEFAULTS = Object.fromEntries(CONTROLS.filter((c) => "default" in c).map((c) => [c.key, c.default]));
+  const SESSION_ONLY_PREFS = ["fullScreen"];
 
   function isValidPref(control, value) {
     switch (control.type) {
@@ -656,21 +803,21 @@
 
   function loadPrefs() {
     let saved = {};
-    try {
-      saved = JSON.parse(localStorage.getItem(PREFS_KEY)) || {};
-    } catch {}
-
+    try { saved = JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch {}
     const loaded = {};
     for (const control of CONTROLS) {
       if (!("default" in control)) continue;
-      loaded[control.key] = isValidPref(control, saved[control.key]) ? saved[control.key] : control.default;
+      const useSaved = !SESSION_ONLY_PREFS.includes(control.key) && isValidPref(control, saved[control.key]);
+      loaded[control.key] = useSaved ? saved[control.key] : control.default;
     }
     return loaded;
   }
 
   function savePrefs() {
     try {
-      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+      const toSave = { ...prefs };
+      SESSION_ONLY_PREFS.forEach((key) => delete toSave[key]);
+      localStorage.setItem(PREFS_KEY, JSON.stringify(toSave));
     } catch {}
   }
 
@@ -678,18 +825,14 @@
 
   function controlHTML(c) {
     const id = `set-${c.key}`;
-    const field = (inner, tag = "div") =>
-      `<${tag} class="setting-field" data-field="${c.key}">${inner}</${tag}>`;
-
+    const field = (inner, tag = "div") => `<${tag} class="setting-field" data-field="${c.key}">${inner}</${tag}>`;
     switch (c.type) {
       case "checkbox":
         return field(`<label class="setting-check"><input type="checkbox" id="${id}" data-key="${c.key}"><span>${c.label}</span></label>`);
-
       case "range":
         return field(`
           <div class="setting-row"><label for="${id}">${c.label}</label><output id="out-${c.key}" for="${id}"></output></div>
           <input type="range" id="${id}" data-key="${c.key}" min="${c.min}" max="${c.max}" step="${c.step}">`);
-
       case "radio":
         return field(`
           <legend class="setting-label">${c.label}</legend>
@@ -700,14 +843,12 @@
               <span>${o.label}</span>
             </label>`).join("")}
           </div>`, "fieldset");
-
       case "select":
         return field(`
           <label class="setting-label" for="${id}">${c.label}</label>
           <select class="setting-select" id="${id}" data-key="${c.key}">
             ${c.options.map((o) => `<option value="${o.value}">${o.label}</option>`).join("")}
           </select>`);
-
       case "button":
         return field(`<button type="button" class="setting-button" data-action="${c.action}">${c.label}</button>`);
     }
@@ -748,22 +889,54 @@
     const all = !changedKey;
 
     root.dataset.guides = prefs.guideStyle;
+    root.dataset.fullscreen = String(prefs.fullScreen);
+    root.dataset.spacing = prefs.lineSpacing;
     root.style.setProperty("--guide-opacity", String(prefs.guideVisibility / 100));
-    traceLayer.classList.toggle("is-hidden", !prefs.showTrace);
+    traceCanvas.classList.toggle("is-hidden", !prefs.showTrace);
 
-    if (root.dataset.spacing !== prefs.lineSpacing) {
-      root.dataset.spacing = prefs.lineSpacing;
-      clearInk();
-      resizeCanvas();
-      if (gameStarted) renderTraceText();
-    }
-
+    applyLayout();
+    computeGeometry(); // guide thickness can change with the guide style
+    renderTraceText();
     redraw();
 
     if (all || changedKey === "defaultDifficulty") {
       const radio = document.querySelector(`input[name="difficulty"][value="${prefs.defaultDifficulty}"]`);
       if (radio) radio.checked = true;
     }
+  }
+
+  /* ---------- Full screen ---------- */
+  const getFullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+
+  function syncNativeFullscreen() {
+    const el = document.documentElement;
+    try {
+      if (prefs.fullScreen && !getFullscreenElement()) {
+        const request = el.requestFullscreen || el.webkitRequestFullscreen;
+        if (request) {
+          const result = request.call(el);
+          if (result && result.catch) result.catch(() => {});
+        }
+      } else if (!prefs.fullScreen && getFullscreenElement()) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) {
+          const result = exit.call(document);
+          if (result && result.catch) result.catch(() => {});
+        }
+      }
+    } catch {}
+  }
+
+  function setFullScreen(on) {
+    prefs.fullScreen = on;
+    applyPrefs("fullScreen");
+    syncSettingsUI();
+    syncNativeFullscreen();
+  }
+
+  function handleNativeFullscreenChange() {
+    if (!getFullscreenElement() && prefs.fullScreen) setFullScreen(false);
+    else refreshLayout();
   }
 
   function readPrefValue(control, el) {
@@ -775,11 +948,11 @@
   function handleSettingsInput(event) {
     const control = CONTROLS.find((c) => c.key === event.target.dataset.key);
     if (!control) return;
-
     prefs[control.key] = readPrefValue(control, event.target);
     savePrefs();
     applyPrefs(control.key);
     syncSettingsUI();
+    if (control.key === "fullScreen") syncNativeFullscreen();
   }
 
   function testSound() {
@@ -797,15 +970,18 @@
     savePrefs();
     applyPrefs();
     syncSettingsUI();
+    syncNativeFullscreen();
   }
 
-
+  /* ---------- Start up ---------- */
   buildRows();
   renderSettingsForm();
   syncSettingsUI();
   applyPrefs();
 
-  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener("resize", refreshLayout);
+  document.addEventListener("fullscreenchange", handleNativeFullscreenChange);
+  document.addEventListener("webkitfullscreenchange", handleNativeFullscreenChange);
   document.addEventListener("keydown", handleKeydown);
 
   sheet.addEventListener("pointerdown", handlePointerDown);
@@ -813,10 +989,8 @@
   sheet.addEventListener("pointerup", endStroke);
   sheet.addEventListener("pointercancel", endStroke);
   sheet.addEventListener("contextmenu", (e) => e.preventDefault());
-  sheet.addEventListener("stroke-outside", (e) => {
-    console.log("Out of line:", e.detail.zone, "| Total errors:", e.detail.errorCount);
-  });
 
+  clearButton.addEventListener("click", clearInk);
   gameButton.addEventListener("click", openGameModal);
   $("game-modal-close").addEventListener("click", closeGameModal);
   $("game-modal-overlay").addEventListener("click", closeGameModal);
@@ -829,6 +1003,7 @@
   $("results-done-button").addEventListener("click", handleDone);
 
   settingsButton.addEventListener("click", openSettingsModal);
+  exitFullscreenButton.addEventListener("click", () => setFullScreen(false));
   $("settings-modal-close").addEventListener("click", closeSettingsModal);
   $("settings-modal-overlay").addEventListener("click", closeSettingsModal);
   $("settings-done-button").addEventListener("click", closeSettingsModal);
@@ -837,6 +1012,15 @@
   settingsBody.addEventListener("click", handleSettingsClick);
 
   resizeCanvas();
+
+  // Measure the font only after it has loaded, otherwise the letters land in the wrong place.
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load(traceFont(100)).then(() => {
+      fontMetrics = null;
+      computeGeometry();
+      renderTraceText();
+    }).catch(() => {});
+  }
 })();
 </script>
 </body>
